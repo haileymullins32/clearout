@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Clearout — find and remove yourself from data broker sites</title>
+<meta name="description" content="A free, local-first tool that helps you find your own listings on people-search sites and walks you through opting out. Nothing you enter ever leaves your device.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-header">
+    <div class="header-top">
+      <div class="brand">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" fill="none" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="2"/>
+          <path d="M10.5 16.5l3.5 3.5 7.5-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h1>Clearout</h1>
+      </div>
+      <a class="privacy-link" href="privacy.html">
+        Privacy &amp; keeping this safe
+        <svg class="privacy-link-arrow" viewBox="0 0 20 20" width="16" height="16" fill="none" aria-hidden="true">
+          <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+    <p class="subtitle">Find where you're listed on data broker sites, and opt out at your own pace. Everything below runs in your browser — nothing you type is ever sent anywhere except when <em>you</em> submit a broker's own form.</p>
+  </header>
+
+  <section class="panel welcome-panel" id="welcome-panel" hidden>
+    <svg class="welcome-icon" viewBox="0 0 64 64" width="48" height="48" fill="none" aria-hidden="true">
+      <circle cx="27" cy="27" r="15" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M38 38l14 14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+      <circle cx="27" cy="27" r="4" fill="currentColor"/>
+    </svg>
+    <h2>Let's find out what's out there</h2>
+    <p>Add your name below so Clearout can build search links for you. Nothing you enter here leaves this browser — it's just used to fill in the "Search for yourself" buttons on the list further down.</p>
+    <div class="welcome-actions">
+      <button type="button" id="welcome-start">Add your info to begin</button>
+      <button type="button" class="link-btn" id="welcome-skip">or browse the list first</button>
+    </div>
+  </section>
+
+  <p class="quiet-note">
+    <strong>How this works:</strong> fill in your profile once, then for each site: click <em>Search for yourself</em> to open it
+    in a new tab and look for a listing that's you, click <em>Opt out</em> when you want to remove it, and
+    mark the status here to keep track. Clearout never searches, submits, or scrapes anything on its own — every
+    site visit and every opt-out request is something you do yourself, in your own tab.
+  </p>
+
+  <section class="panel ca-callout" id="ca-callout" hidden>
+    <div class="ca-callout-head">
+      <svg class="ca-callout-icon" viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
+        <path d="M12 21s7-7.58 7-12A7 7 0 0 0 5 9c0 4.42 7 12 7 12z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+        <circle cx="12" cy="9" r="2.4" stroke="currentColor" stroke-width="1.6"/>
+      </svg>
+      <h2>You're in California — start here</h2>
+    </div>
+    <p>
+      California's <strong>Delete Request and Opt-out Platform (DROP)</strong> lets you send one deletion request
+      that reaches every data broker registered with the state at once — run directly by the California Privacy
+      Protection Agency, and free. For most Californians, this is the single highest-leverage action on this page.
+    </p>
+    <div class="row">
+      <a class="btn-link" href="https://consumer.drop.privacy.ca.gov" target="_blank" rel="noopener noreferrer">Open the CA DROP portal</a>
+    </div>
+    <p class="hint" style="margin:10px 0 0;">
+      DROP only reaches brokers registered with California, so it's not a substitute for opting out of the
+      highest-priority sites individually below — but it's the fastest way to cover the most ground in one step.
+    </p>
+  </section>
+
+  <section class="panel" id="profile-panel">
+    <div class="panel-head"><h2>Your info</h2></div>
+
+    <div class="profile-summary" id="profile-summary" hidden>
+      <span class="profile-summary-text" id="profile-summary-text"></span>
+      <button type="button" class="small secondary" id="edit-profile">Edit</button>
+    </div>
+
+    <div id="profile-form-wrap">
+      <p class="privacy-note">
+        🔒 This data is saved only in this browser (local storage) and is never sent anywhere by
+        Clearout — not to a server, not to us, not to anyone. It's only used to fill in search
+        links and opt-out forms that <em>you</em> choose to open.
+      </p>
+      <p class="hint">More fields help some sites match your record faster, but all fields are optional.</p>
+      <form id="profile-form">
+        <div class="grid">
+          <div class="field">
+            <label for="full_name">Full name</label>
+            <input id="full_name" name="full_name" autocomplete="name">
+          </div>
+          <div class="field">
+            <label for="other_names">Other names used (maiden name, nicknames, comma-separated)</label>
+            <input id="other_names" name="other_names">
+          </div>
+        </div>
+
+        <div class="subsection">
+          <label class="subsection-label">Addresses</label>
+          <div id="addresses-list" class="repeat-list"></div>
+          <button type="button" class="small secondary add-row-btn" id="add-address">+ Add address</button>
+        </div>
+
+        <div class="subsection">
+          <label class="subsection-label">Phone numbers</label>
+          <div id="phones-list" class="repeat-list"></div>
+          <button type="button" class="small secondary add-row-btn" id="add-phone">+ Add phone number</button>
+        </div>
+
+        <div class="subsection">
+          <label class="subsection-label">Emails</label>
+          <p class="hint" style="margin:0 0 8px;">Consider a dedicated alias — opt-out correspondence sometimes ends up on marketing lists.</p>
+          <div id="emails-list" class="repeat-list"></div>
+          <button type="button" class="small secondary add-row-btn" id="add-email">+ Add email</button>
+        </div>
+      </form>
+      <div class="row">
+        <button id="save-profile" type="button">Save</button>
+        <button id="export-data" type="button" class="secondary">Export my data</button>
+        <label class="secondary file-label" for="import-data">Import backup…</label>
+        <input id="import-data" type="file" accept="application/json" hidden>
+        <span id="profile-saved-msg" class="saved-msg" hidden>Saved</span>
+      </div>
+    </div>
+  </section>
+
+  <template id="address-row-template">
+    <div class="repeat-row address-row">
+      <select class="address-type">
+        <option value="current">Current</option>
+        <option value="past">Past</option>
+      </select>
+      <input class="address-street" placeholder="Street (optional)" autocomplete="street-address">
+      <input class="address-city" placeholder="City" autocomplete="address-level2">
+      <input class="address-state" placeholder="State" maxlength="2" style="text-transform:uppercase" autocomplete="address-level1">
+      <button type="button" class="small secondary remove-row-btn" aria-label="Remove address">✕</button>
+    </div>
+  </template>
+
+  <template id="phone-row-template">
+    <div class="repeat-row simple-row">
+      <input class="phone-input" type="tel" placeholder="Phone number" autocomplete="tel">
+      <button type="button" class="small secondary remove-row-btn" aria-label="Remove phone number">✕</button>
+    </div>
+  </template>
+
+  <template id="email-row-template">
+    <div class="repeat-row simple-row">
+      <input class="email-input" type="email" placeholder="Email address" autocomplete="email">
+      <button type="button" class="small secondary remove-row-btn" aria-label="Remove email">✕</button>
+    </div>
+  </template>
+
+  <section class="panel" id="summary-panel">
+    <h2>Progress</h2>
+    <p class="progress-sentence" id="progress-sentence"></p>
+    <div class="progress-bar" id="progress-bar"></div>
+    <div class="progress-legend" id="progress-legend"></div>
+  </section>
+
+  <section class="panel all-clear-panel" id="all-clear-panel" hidden>
+    <svg class="all-clear-icon" viewBox="0 0 64 64" width="52" height="52" fill="none" aria-hidden="true">
+      <circle cx="32" cy="32" r="24" stroke="currentColor" stroke-width="2.5"/>
+      <path d="M21 32l7 7 15-16" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 14l3 3M56 14l-3 3M8 50l3-3M56 50l-3-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <h2>You're all clear</h2>
+    <p id="all-clear-text"></p>
+  </section>
+
+  <section class="panel" id="controls-panel">
+    <div class="row controls-row">
+      <div class="field">
+        <label for="filter-priority">Priority</label>
+        <select id="filter-priority">
+          <option value="">All</option>
+          <option value="crucial">Crucial</option>
+          <option value="high">High</option>
+          <option value="normal">Normal</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-status">Status</label>
+        <select id="filter-status">
+          <option value="">All</option>
+          <option value="not_started">Not started</option>
+          <option value="no_hit">No hit</option>
+          <option value="found">Found</option>
+          <option value="opt_out_requested">Opt-out requested</option>
+          <option value="removed">Removed</option>
+          <option value="needs_followup">Needs follow-up</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-category">Category</label>
+        <select id="filter-category">
+          <option value="">All</option>
+          <option value="public_people_search">People search</option>
+          <option value="non_public_broker">Data broker</option>
+          <option value="search_engine">Search engine</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-cost">Cost</label>
+        <select id="filter-cost">
+          <option value="">All</option>
+          <option value="free">Free only</option>
+          <option value="paid">May cost money</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="filter-requires-id">ID requirement</label>
+        <select id="filter-requires-id">
+          <option value="">All</option>
+          <option value="no">No ID required</option>
+          <option value="yes">ID required</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sort-by">Sort by</label>
+        <select id="sort-by">
+          <option value="priority">Priority</option>
+          <option value="name">Name (A–Z)</option>
+          <option value="category">Category</option>
+          <option value="cost">Cost (free first)</option>
+          <option value="requires_id">ID requirement (no ID first)</option>
+        </select>
+      </div>
+      <div class="field checkbox-field">
+        <label class="checkbox-label"><input type="checkbox" id="filter-due"> Due for recheck</label>
+      </div>
+      <div class="field grow">
+        <label for="search-box">Find a site</label>
+        <input id="search-box" type="search" placeholder="Search by name…">
+      </div>
+    </div>
+  </section>
+
+  <section id="broker-list" aria-live="polite"></section>
+
+  <template id="broker-card-template">
+    <article class="panel broker-card">
+      <div class="broker-head">
+        <div class="broker-title">
+          <h3 class="broker-name"></h3>
+          <span class="badge due-badge" hidden>Due for recheck</span>
+        </div>
+        <span class="pill status-pill"></span>
+      </div>
+      <p class="broker-meta"></p>
+      <div class="row broker-actions">
+        <a class="btn-link search-link" target="_blank" rel="noopener noreferrer">Search for yourself</a>
+        <a class="btn-link secondary optout-link" target="_blank" rel="noopener noreferrer">Open opt-out page</a>
+        <select class="status-select"></select>
+        <button type="button" class="small secondary details-toggle" aria-expanded="false">Details</button>
+      </div>
+      <div class="broker-details" hidden>
+        <div class="detail-row"><span class="detail-label">Opt-out method:</span> <span class="method-value"></span></div>
+        <p class="broker-notes"></p>
+        <div class="detail-row recheck-row">
+          <span class="detail-label">Recheck every</span>
+          <input type="number" class="recheck-days-input" min="1" step="1">
+          <span>days after marked Removed.</span>
+          <span class="recheck-status"></span>
+        </div>
+        <label class="notes-label">Your notes (listing URL, dates, anything worth remembering)</label>
+        <textarea class="notes-input" rows="2"></textarea>
+      </div>
+    </article>
+  </template>
+
+  <footer class="page-footer">
+    <p>
+      Clearout is a free, local-first tool. App code is MIT-licensed. The broker list in
+      <code>data/brokers.json</code> is transcribed from the
+      <a href="https://github.com/yaelwrites/Big-Ass-Data-Broker-Opt-Out-List" target="_blank" rel="noopener noreferrer">Big Ass Data Broker Opt-Out List (BADBOOL)</a>
+      by <a href="https://yaelwrites.com/" target="_blank" rel="noopener noreferrer">Yael Writes</a>, used under
+      CC BY-NC-SA (noncommercial, attribution required). Opt-out pages change often — if a link looks stale or
+      broken, search "&lt;site name&gt; opt out" to find the current page.
+    </p>
+  </footer>
+
+</div>
+<script src="js/app.js"></script>
+</body>
+</html>

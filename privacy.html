@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy — Clearout</title>
+<meta name="description" content="How Clearout stores your data, what it never does, and how to keep your info private if you use it on a device other people can access.">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header class="page-header">
+    <div class="header-top">
+      <a class="brand" href="index.html" style="text-decoration:none;">
+        <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" fill="none" aria-hidden="true">
+          <circle cx="16" cy="16" r="13" stroke="currentColor" stroke-width="2"/>
+          <path d="M10.5 16.5l3.5 3.5 7.5-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <h1>Clearout</h1>
+      </a>
+      <a class="privacy-link" href="index.html">
+        <svg class="privacy-link-arrow" viewBox="0 0 20 20" width="16" height="16" fill="none" aria-hidden="true" style="transform:rotate(180deg);">
+          <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Back to Clearout
+      </a>
+    </div>
+    <p class="subtitle">What Clearout does with your data, and how to keep it private if this device isn't only yours.</p>
+  </header>
+
+  <section class="panel">
+    <h2>The short answer</h2>
+    <p>
+      Nothing you type into Clearout is ever sent anywhere. There's no server, no account, no
+      analytics, and no company on the other end of this collecting anything. Your name,
+      addresses, phone numbers, and emails are saved only inside <strong>this browser, on this
+      device</strong> — that's the entire extent of where your data lives.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>How your data is actually stored</h2>
+    <p>
+      Everything you enter is saved using a browser feature called <code>localStorage</code> —
+      think of it as a small file the browser keeps for this specific site, on this specific
+      device. It is:
+    </p>
+    <ul>
+      <li><strong>Never transmitted.</strong> Clearout's code makes exactly one network request —
+        loading its own list of broker sites — and nothing else. Nothing you type is included in
+        any request, ever.</li>
+      <li><strong>Local to this browser.</strong> It doesn't sync to your account, to other
+        browsers, or to other devices, unless you explicitly use the <strong>Export my data</strong>
+        button and move that file yourself.</li>
+      <li><strong>Gone if you clear it.</strong> Clearing your browser's site data, or using a
+        private/incognito window, removes it — which is a feature, not a bug, on a device you
+        don't want to leave a trace on (see below).</li>
+    </ul>
+  </section>
+
+  <section class="panel caution-note">
+    <h2>The one real risk: shared devices</h2>
+    <p>
+      <code>localStorage</code> is shared by <strong>anyone using the same browser on the same
+      computer</strong> — it doesn't know who's sitting at the keyboard. If someone else opens
+      Clearout in that same browser later, they'd see whatever profile was last saved there, the
+      same way they'd see saved autofill or a logged-in email account.
+    </p>
+    <p style="margin-bottom:0;">
+      <strong>Only use Clearout on a device you own and control, that isn't shared with people you
+      don't know and fully trust</strong> — not a library computer, a work or school shared
+      machine, a hotel business center, or a friend's device where other people also have access.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>How to keep it private</h2>
+    <ol>
+      <li><strong>Stick to a personal device.</strong> Your own phone, laptop, or desktop — one
+        only you (and people you'd trust with your address and phone number) can log into.</li>
+      <li><strong>If you must use a shared or public computer, use a private/incognito window.</strong>
+        Data saved there is automatically thrown away when you close the window, so nothing lingers
+        for the next person. The tradeoff is that Clearout won't remember your progress between
+        sessions — use <strong>Export my data</strong> before you close the window if you want to
+        pick up where you left off later.</li>
+      <li><strong>On a shared device you use regularly,</strong> clear this site's data when
+        you're done (in most browsers: Settings → Privacy → Clear browsing data, or right-click
+        the page → Inspect → Application → Clear site data). A private window is easier if you
+        have the option.</li>
+      <li><strong>Treat exported backup files like the personal document they are.</strong> The
+        file from <strong>Export my data</strong> contains everything in your profile in plain
+        text. Save it somewhere only you can access, and don't leave a copy sitting in the
+        Downloads folder of a computer that isn't yours.</li>
+      <li><strong>There's no login, so there's no "logging out."</strong> Anyone with access to
+        your unlocked device and browser can open this page and see what's saved. Lock your device
+        the way you normally would.</li>
+    </ol>
+  </section>
+
+  <section class="panel">
+    <h2>What can the person who published this page see?</h2>
+    <p>
+      If you're using a copy of Clearout someone else hosts (including its own GitHub Pages site),
+      the same guarantee applies: the app has no backend to send data to, so its host — including
+      us — has no way to see what you type, how many people use it, or anything else about your
+      session. A host can typically see ordinary web server logs (like which pages were requested
+      and roughly when), the same as any website, but never form content, since none is ever sent.
+      If you'd rather not rely on someone else's copy at all, Clearout is designed to be trivial to
+      self-host — see the README for plain-language instructions.
+    </p>
+  </section>
+
+  <footer class="page-footer">
+    <p>
+      <a href="index.html">← Back to Clearout</a>
+    </p>
+  </footer>
+
+</div>
+</body>
+</html>
